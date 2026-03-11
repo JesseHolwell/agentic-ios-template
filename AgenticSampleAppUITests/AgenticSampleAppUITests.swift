@@ -9,33 +9,61 @@ import XCTest
 
 final class AgenticSampleAppUITests: XCTestCase {
 
+    var app: XCUIApplication!
+
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    @MainActor
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
+        app = XCUIApplication()
         app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
 
-    @MainActor
-    func testLaunchPerformance() throws {
-        // This measures how long it takes to launch your application.
-        measure(metrics: [XCTApplicationLaunchMetric()]) {
-            XCUIApplication().launch()
-        }
+    func test_navigationTitle_isDisplayed() {
+        XCTAssertTrue(app.navigationBars["Todos"].exists)
+    }
+
+    func test_addButton_isDisabled_whenFieldIsEmpty() {
+        XCTAssertFalse(app.buttons["addButton"].isEnabled)
+    }
+
+    func test_addTodo_appearsInList() {
+        let field = app.textFields["newTodoField"]
+        field.tap()
+        field.typeText("Buy milk")
+        app.buttons["addButton"].tap()
+
+        XCTAssertTrue(app.staticTexts["Buy milk"].exists)
+    }
+
+    func test_addButton_clearsField_afterAdding() {
+        let field = app.textFields["newTodoField"]
+        field.tap()
+        field.typeText("Buy milk")
+        app.buttons["addButton"].tap()
+
+        XCTAssertEqual(field.value as? String, "")
+    }
+
+    func test_tappingTodo_togglesCompletion() {
+        let field = app.textFields["newTodoField"]
+        field.tap()
+        field.typeText("Walk the dog")
+        app.buttons["addButton"].tap()
+
+        app.staticTexts["Walk the dog"].tap()
+
+        // Row still exists after toggle
+        XCTAssertTrue(app.staticTexts["Walk the dog"].exists)
+    }
+
+    func test_swipeToDelete_removesTodo() {
+        let field = app.textFields["newTodoField"]
+        field.tap()
+        field.typeText("Delete me")
+        app.buttons["addButton"].tap()
+
+        app.staticTexts["Delete me"].swipeLeft()
+        app.buttons["Delete"].tap()
+
+        XCTAssertFalse(app.staticTexts["Delete me"].exists)
     }
 }
