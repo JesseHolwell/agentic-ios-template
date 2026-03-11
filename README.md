@@ -20,16 +20,17 @@ This template will eventually inform the standards brought into a production iOS
 
 ```
 agentic-ios-template/
-├── App/                    # SwiftUI app target
-├── UnitTests/              # XCTest unit test target
-├── UITests/                # XCUITest UI test target
-├── scripts/                # Repeatable shell scripts for the agent
+├── AgenticSampleApp/           # SwiftUI app target
+├── AgenticSampleAppTests/      # XCTest unit test target
+├── AgenticSampleAppUITests/    # XCUITest UI test target
+├── AgenticSampleApp.xcodeproj/
+├── scripts/                    # Repeatable shell scripts for the agent
 │   ├── build.sh
 │   ├── test-unit.sh
 │   ├── test-ui.sh
 │   └── test-all.sh
 ├── .github/
-│   └── workflows/          # GitHub Actions CI/CD
+│   └── workflows/              # GitHub Actions CI/CD
 └── README.md
 ```
 
