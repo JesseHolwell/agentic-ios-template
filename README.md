@@ -64,6 +64,41 @@ All agent-facing commands live in `scripts/`. They are thin wrappers around `xco
 
 Scripts exit with a non-zero code on failure and print structured output so the agent can parse results without guessing.
 
+The `DESTINATION` environment variable can be overridden to target a specific simulator:
+
+```bash
+DESTINATION="platform=iOS Simulator,name=iPhone 16,OS=18.2" bash scripts/test-all.sh
+```
+
+---
+
+## XcodeBuildMCP
+
+[XcodeBuildMCP](https://github.com/getsentry/XcodeBuildMCP) is an MCP server that wraps xcodebuild and exposes structured build and test tools directly to the agent. It complements the scripts layer — scripts are used by CI, XcodeBuildMCP improves the local interactive development loop.
+
+**Why it matters:** Raw xcodebuild output is extremely verbose (build logs can be 100k+ tokens). XcodeBuildMCP structures and compresses that output for LLM consumption, making the agent's feedback loop faster and more accurate.
+
+**Setup (one-time, already done for this project):**
+
+```bash
+claude mcp add XcodeBuildMCP -- npx -y xcodebuildmcp@latest mcp
+```
+
+Or manually in `~/.claude/settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "XcodeBuildMCP": {
+      "command": "npx",
+      "args": ["-y", "xcodebuildmcp@latest", "mcp"]
+    }
+  }
+}
+```
+
+Restart Claude Code after adding. The agent will then have access to structured build, test, and simulator tools in addition to the shell scripts.
+
 ---
 
 ## Agentic Workflow
@@ -126,11 +161,12 @@ Then ask the agent to fix the failing test and observe the feedback loop in acti
 
 This template is an exploration. Decisions made here will be evaluated before being carried into production.
 
-- [ ] SwiftUI todo app with unit and UI tests
-- [ ] `scripts/` layer with build, test-unit, test-ui, test-all
+- [x] SwiftUI todo app with unit and UI tests
+- [x] `scripts/` layer with build, test-unit, test-ui, test-all
+- [x] XcodeBuildMCP for structured local build/test output
 - [ ] GitHub Actions: CI on PR, TestFlight upload on merge to main
-- [ ] Intentionally failing test as an agent onboarding exercise
-- [ ] Documented agentic workflow (this README)
+- [x] Intentionally failing test as an agent onboarding exercise
+- [x] Documented agentic workflow (this README)
 - [ ] Evaluate: snapshot testing for UI regression
 - [ ] Evaluate: apply template decisions to production iOS codebase
 

@@ -1,0 +1,7 @@
+schemaVersion: 1
+sessionDefaults:
+  scheme: AgenticSampleApp
+  simulatorName: iPhone 16
+  simulatorId: EECF6D8D-4F87-4AE2-92E4-1E908A762C62
+  simulatorPlatform: iOS Simulator
+  useLatestOS: true

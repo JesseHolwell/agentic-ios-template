@@ -1,0 +1,20 @@
+# Branches the push guard (~/.claude/hooks/guard-push.sh) refuses to push to.
+# One name per line. Without this file the guard defaults to main and master;
+# an empty list protects nothing.
+#
+# **Deliberately empty.** Profile: personal — the agent merges `main` itself
+# once the gate passes, so a protected `main` here blocks the intended
+# workflow rather than guarding anything.
+#
+# A personal template repo. CI runs on push to main, which is the signal; there is no deploy to gate.
+#
+# Added 2026-09-07. This repo was one of three personal repos still defaulting
+# to a protected `main` because it never got an opt-out file, while tea,
+# currant and second-brain had one. That inconsistency is what made "agents
+# keep getting blocked pushing to main" feel intermittent and unexplainable.
+#
+# What still guards `main` without a PR: `git push --force`, `git push -f`,
+# `git reset --hard` and `git clean -f` are denied globally, `origin` is a
+# full second copy, and `git reflog` recovers a bad push.
+#
+# The file must EXIST and list nothing. Don't "tidy it up" by deleting it.
