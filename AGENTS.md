@@ -44,9 +44,15 @@ The intended loop for any change:
 2. Write code to make them pass
 3. `scripts/build.sh` — verify it compiles
 4. `scripts/test-all.sh` — verify tests pass
-5. Open a PR with simulator screenshots of affected views
+5. Show simulator screenshots of the affected views **in the session**, with a line saying what to look at
 
-PR lifecycle: GitHub Actions runs `test-all.sh` on every push. On merge to `main`, a TestFlight build is uploaded. PR comments from reviewers should be actioned by the agent with new commits.
+CI: GitHub Actions runs `test-all.sh` on every push, and a merge to `main` uploads a TestFlight build.
+
+**No pull requests here.** This is a `personal` profile repo — one owner, no
+reviewer, so the agent commits, pushes and merges `main` itself once the gate
+passes. The old instruction to open a PR carrying screenshots was the work
+workflow leaking into a personal project; screenshots belong in the session,
+where the only person who would read them already is. Retired 2026-09-07.
 
 ---
 
